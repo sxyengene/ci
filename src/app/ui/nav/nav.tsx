@@ -1,14 +1,16 @@
 import React from "react";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { ConfigProvider, Layout, Menu } from "antd";
+import zhCN from "antd/lib/locale/zh_CN";
 import { Header, Content, Footer } from "antd/lib/layout/layout";
 import BreadcrumbItem from "antd/lib/breadcrumb/BreadcrumbItem";
 import clsx from "clsx";
 
-const items = new Array(3).fill(null).map((_, index) => ({
-  key: String(index + 1),
-  label: `nav ${index + 1}`,
-}));
+const items = [
+  { key: "1", label: "项目打包" },
+  { key: "2", label: "服务配置" },
+  { key: "3", label: "数据分析" },
+];
 
 interface NavProps {
   content?: React.ReactNode;
@@ -16,55 +18,47 @@ interface NavProps {
 }
 
 const Nav: React.FC<NavProps> = ({ content, footer }) => {
+  const themeNow = {
+    token: {
+      colorPrimary: "#1DA57A",
+    },
+  };
   return (
     <AntdRegistry>
-      <Layout>
-        <Header
-          style={{
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={["2"]}
-            items={items}
-            style={{ flex: 1, minWidth: 0 }}
-          />
-          <div className="demo-logo" />
-        </Header>
-        <Content
-          style={{
-            minHeight: 280,
-            padding: 24,
-          }}
-          className={clsx("bg-white")}
-        >
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <BreadcrumbItem>Home</BreadcrumbItem>
-            <BreadcrumbItem>List</BreadcrumbItem>
-            <BreadcrumbItem>App</BreadcrumbItem>
-          </Breadcrumb>
-          <div
+      <ConfigProvider locale={zhCN} theme={themeNow}>
+        <Layout>
+          <Header
             style={{
-              padding: 24,
-              minHeight: 380,
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
             }}
+            className={clsx("flex justify-center")}
           >
-            {content ? content : "Content"}
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          {footer
-            ? footer
-            : `Ant Design ${new Date().getFullYear()} Created by Ant UED`}
-        </Footer>
-      </Layout>
+            <Menu
+              theme="dark"
+              mode="horizontal"
+              defaultSelectedKeys={["1"]}
+              items={items}
+              className={clsx("")}
+            />
+            <div className="demo-logo" />
+          </Header>
+          <Content className={clsx("bg-white p-12")}>
+            <div className={clsx(" min-h-80 p-15")}>
+              {content ? content : "Content"}
+            </div>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            {footer
+              ? footer
+              : `Ant Design ${new Date().getFullYear()} Created by Ant UED`}
+          </Footer>
+        </Layout>
+      </ConfigProvider>
     </AntdRegistry>
   );
 };
